@@ -57,7 +57,7 @@ public class PackagesParser {
                     if (!s.isEmpty()) depends.add(s);
                 }
             } else if (line.isEmpty() && pkg != null && version != null) {
-                if (version.equals(config.getVersion())) {
+                if (version.equals(config.getVersion()) || config.getVersion().isEmpty()) {
                     deps.put(pkg, depends == null ? List.of() : depends);
                 }
                 pkg = null;

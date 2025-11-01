@@ -15,15 +15,37 @@ public class MermaidGenerator {
     public String generateMermaid() {
         StringBuilder sb = new StringBuilder();
         sb.append("graph TD\n");
+
+        Map<String, String> nodeIds = new HashMap<>();
+        int counter = 0;
+
         for (String pkg : graph.getAllPackages()) {
-            List<String> deps = graph.getDependencies(pkg);
-            for (String dep : deps) {
-                sb.append("    ").append(pkg).append(" --> ").append(dep).append("\n");
+            String id = pkg.replaceAll("[^a-zA-Z0-9_]", "_");
+            if (nodeIds.containsValue(id)) {
+                id += "_" + counter++;
             }
+            nodeIds.put(pkg, id);
+        }
+
+        for (String pkg : graph.getAllPackages()) {
+            String fromId = nodeIds.get(pkg);
+            List<String> deps = graph.getDependencies(pkg);
             if (deps.isEmpty()) {
-                sb.append("    ").append(pkg).append("\n");
+                sb.append("    ").append(fromId).append("[\"").append(pkg).append("\"]\n");
+            } else {
+                for (String dep : deps) {
+                    String toId = nodeIds.get(dep);
+                    if (toId == null) {
+                        // если зависимость не найдена в graph, создаем id на лету
+                        toId = dep.replaceAll("[^a-zA-Z0-9_]", "_") + "_" + counter++;
+                        nodeIds.put(dep, toId);
+                    }
+                    sb.append("    ").append(fromId).append(" --> ").append(toId)
+                            .append("[\"").append(dep).append("\"]\n");
+                }
             }
         }
+
         return sb.toString();
     }
 
