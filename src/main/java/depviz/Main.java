@@ -3,6 +3,13 @@ package depviz;
 public class Main {
     public static void main(String[] args) {
         try {
+            String saveMermaid = null;
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].equals("--saveMermaid") && i + 1 < args.length) {
+                    saveMermaid = args[i + 1];
+                }
+            }
+
             Config config = CLIParser.parseArgs(args);
             System.out.println("=== CONFIGURATION ===");
             System.out.println(config);
@@ -36,12 +43,15 @@ public class Main {
             System.out.println("\n=== LOAD ORDER ===");
             order.forEach(System.out::println);
 
-            MermaidGenerator generator = new MermaidGenerator(fullGraph);
-            System.out.println("\n=== MERMAID GRAPH ===");
-            System.out.println(generator.generateMermaid(config.getPackageName()));
+            String mermaidFile = config.getSaveMermaid() != null ? config.getSaveMermaid() : "graph.mmd";
+            MermaidGenerator mg = new MermaidGenerator(fullGraph);
+            mg.saveToFile(mermaidFile);
+            System.out.println("\nMermaid diagram saved to " + mermaidFile);
+
 
         } catch (Exception e) {
             System.err.println("ERROR: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

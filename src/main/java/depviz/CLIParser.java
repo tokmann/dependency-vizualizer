@@ -5,6 +5,7 @@ public class CLIParser {
         String pkg = null, url = null, version = null, filter = "";
         boolean test = false;
         int depth = 3;
+        String saveMermaid = null;
 
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
@@ -14,6 +15,7 @@ public class CLIParser {
                 case "--depth" -> depth = Integer.parseInt(args[++i]);
                 case "--filter" -> filter = args[++i];
                 case "--test" -> test = true;
+                case "--saveMermaid" -> saveMermaid = args[++i];
                 default -> throw new IllegalArgumentException("Unknown option: " + args[i]);
             }
         }
@@ -23,6 +25,8 @@ public class CLIParser {
         if (version == null) throw new IllegalArgumentException("Missing --version");
         if (depth < 1) throw new IllegalArgumentException("Depth must be positive");
 
-        return new Config(pkg, url, test, version, depth, filter);
+        Config config = new Config(pkg, url, test, version, depth, filter);
+        config.setSaveMermaid(saveMermaid);
+        return config;
     }
 }

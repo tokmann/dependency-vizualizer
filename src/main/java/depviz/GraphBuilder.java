@@ -33,7 +33,7 @@ public class GraphBuilder {
 
             List<String> filtered = new ArrayList<>();
             for (String dep : deps) {
-                if (!dep.contains(config.getFilterSubstring())) {
+                if (!dep.contains(config.getFilterSubstring()) || config.getFilterSubstring().isEmpty()) {
                     filtered.add(dep);
                     stack.push(dep);
                     depth.push(d + 1);

@@ -1,5 +1,8 @@
 package depviz;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class MermaidGenerator {
@@ -9,7 +12,7 @@ public class MermaidGenerator {
         this.graph = graph;
     }
 
-    public String generateMermaid(String root) {
+    public String generateMermaid() {
         StringBuilder sb = new StringBuilder();
         sb.append("graph TD\n");
         for (String pkg : graph.getAllPackages()) {
@@ -17,7 +20,17 @@ public class MermaidGenerator {
             for (String dep : deps) {
                 sb.append("    ").append(pkg).append(" --> ").append(dep).append("\n");
             }
+            if (deps.isEmpty()) {
+                sb.append("    ").append(pkg).append("\n");
+            }
         }
         return sb.toString();
     }
+
+    public void saveToFile(String filePath) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(generateMermaid());
+        }
+    }
+
 }
