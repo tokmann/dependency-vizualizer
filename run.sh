@@ -2,13 +2,6 @@
 
 JAR="target/kisscm-pract3-1.0-SNAPSHOT-jar-with-dependencies.jar"
 
-if [ ! -f "$JAR" ]; then
-  echo "JAR-файл не найден. Сначала собери проект:"
-  echo "   mvn package"
-  exit 1
-fi
-
-echo "=== Dependency Visualizer ==="
 echo "Выберите режим запуска:"
 echo "1) Тестовый режим (test_repo.txt)"
 echo "2) Реальный режим (APT repository)"
@@ -21,7 +14,6 @@ run_java() {
     java -jar "$JAR" "$@" --saveMermaid "$MMD_FILE"
 
     if command -v mmdc &> /dev/null; then
-        echo "Генерируем PNG из Mermaid..."
         mmdc -i "$MMD_FILE" -o "$SVG_FILE"
         echo "Граф сохранен в SVG_FILE"
     else
@@ -47,7 +39,7 @@ elif [ "$mode" == "2" ]; then
   read -p "Введите версию (например: 5.1-6ubuntu1): " ver
   read -p "Введите максимальную глубину (например: 2): " depth
   read -p "Введите подстроку для фильтрации (например: dev): " filter
-  read -p "Введите URL пакета (по умолчанию jammy/main/binary-amd64/Packages.gz): " repo
+  read -p "Введите URL пакета (по умолчанию http://archive.ubuntu.com/ubuntu/dists/jammy/main/binary-amd64/Packages.gz): " repo
   repo=${repo:-http://archive.ubuntu.com/ubuntu/dists/jammy/main/binary-amd64/Packages.gz}
 
   echo ""

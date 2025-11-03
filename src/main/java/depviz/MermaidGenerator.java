@@ -36,7 +36,6 @@ public class MermaidGenerator {
                 for (String dep : deps) {
                     String toId = nodeIds.get(dep);
                     if (toId == null) {
-                        // если зависимость не найдена в graph, создаем id на лету
                         toId = dep.replaceAll("[^a-zA-Z0-9_]", "_") + "_" + counter++;
                         nodeIds.put(dep, toId);
                     }
