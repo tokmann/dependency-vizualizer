@@ -16,9 +16,6 @@ run_java() {
     if command -v mmdc &> /dev/null; then
         mmdc -i "$MMD_FILE" -o "$SVG_FILE"
         echo "Граф сохранен в SVG_FILE"
-    else
-        echo "mmdc не установлен. Mermaid файл сохранен в $MMD_FILE"
-        echo "Установите mmdc: npm install -g @mermaid-js/mermaid-cli"
     fi
 }
 
