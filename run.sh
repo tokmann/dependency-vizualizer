@@ -15,15 +15,15 @@ echo "2) Реальный режим (APT repository)"
 read -p "Выбор (1/2): " mode
 
 MMD_FILE="graph.mmd"
-SVG_FILE="graph.svg"
+PNG_FILE="graph.png"
 
 run_java() {
     java -jar "$JAR" "$@" --saveMermaid "$MMD_FILE"
 
     if command -v mmdc &> /dev/null; then
         echo "Генерируем PNG из Mermaid..."
-        mmdc -i "$MMD_FILE" -o "$SVG_FILE"
-        echo "Граф сохранен в SVG_FILE"
+        mmdc -i "$MMD_FILE" -o "$PNG_FILE"
+        echo "Граф сохранен в $PNG_FILE"
     else
         echo "mmdc не установлен. Mermaid файл сохранен в $MMD_FILE"
         echo "Установите mmdc: npm install -g @mermaid-js/mermaid-cli"
